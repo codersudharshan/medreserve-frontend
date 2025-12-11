@@ -1,0 +1,247 @@
+{
+	"info": {
+		"name": "MedReserve API",
+		"description": "Complete API collection for MedReserve healthcare appointment booking system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "medreserve-api"
+	},
+	"item": [
+		{
+			"name": "Public Endpoints",
+			"item": [
+				{
+					"name": "Get All Doctors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/doctors",
+							"host": ["{{base_url}}"],
+							"path": ["doctors"]
+						},
+						"description": "Retrieve all available doctors in the system"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doctor Slots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/doctors/:id/slots",
+							"host": ["{{base_url}}"],
+							"path": ["doctors", ":id", "slots"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Doctor ID"
+								}
+							]
+						},
+						"description": "Get all available appointment slots for a specific doctor"
+					},
+					"response": []
+				},
+				{
+					"name": "Book Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"patient_name\": \"Jane Doe\",\n  \"patient_email\": \"jane@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/slots/:slotId/book",
+							"host": ["{{base_url}}"],
+							"path": ["slots", ":slotId", "book"],
+							"variable": [
+								{
+									"key": "slotId",
+									"value": "1",
+									"description": "Slot ID to book"
+								}
+							]
+						},
+						"description": "Book an appointment for a specific slot. Uses transaction-based locking to prevent double-booking."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": ["{{base_url}}"],
+							"path": ["bookings", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Booking ID"
+								}
+							]
+						},
+						"description": "Retrieve a booking by its ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Endpoints",
+			"item": [
+				{
+					"name": "Create Doctor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Dr. John Smith\",\n  \"specialization\": \"Cardiology\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/doctors",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "doctors"]
+						},
+						"description": "Create a new doctor. Name is required, specialization is optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Doctors (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/doctors",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "doctors"]
+						},
+						"description": "Get all doctors via admin endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Slot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"doctor_id\": 1,\n  \"start_time\": \"2024-01-20T10:00:00.000Z\",\n  \"duration_minutes\": 30\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/slots",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "slots"]
+						},
+						"description": "Create a new appointment slot for a doctor. All fields are required."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Doctor Slots (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/doctors/:id/slots",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "doctors", ":id", "slots"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Doctor ID"
+								}
+							]
+						},
+						"description": "Get all slots for a specific doctor via admin endpoint"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/stats",
+							"host": ["{{base_url}}"],
+							"path": ["admin", "stats"]
+						},
+						"description": "Get system statistics: total doctors, slots, and bookings"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{health_url}}",
+							"host": ["{{health_url}}"]
+						},
+						"description": "Check if the API server is running and healthy"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:4000/api",
+			"type": "string"
+		},
+		{
+			"key": "health_url",
+			"value": "http://localhost:4000/health",
+			"type": "string"
+		}
+	]
+}
+
